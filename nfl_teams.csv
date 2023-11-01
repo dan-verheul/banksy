@@ -1,0 +1,33 @@
+ID,Name,Team,Abbreviation,Conference,Division,Sport
+1,Arizona Cardinals,Cardinals,ARI,NFC,West,NFL
+2,Atlanta Falcons,Falcons,ATL,NFC,South,NFL
+3,Baltimore Ravens,Ravens,BAL,AFC,North,NFL
+4,Buffalo Bills,Bills,BUF,AFC,East,NFL
+5,Carolina Panthers,Panthers,CAR,NFC,South,NFL
+6,Chicago Bears,Bears,CHI,NFC,North,NFL
+7,Cincinnati Bengals,Bengals,CIN,AFC,North,NFL
+8,Cleveland Browns,Browns,CLE,AFC,North,NFL
+9,Dallas Cowboys,Cowboys,DAL,NFC,East,NFL
+10,Denver Broncos,Broncos,DEN,AFC,West,NFL
+11,Detroit Lions,Lions,DET,NFC,North,NFL
+12,Green Bay Packers,Packers,GB,NFC,North,NFL
+13,Houston Texans,Texans,HOU,AFC,South,NFL
+14,Indianapolis Colts,Colts,IND,AFC,South,NFL
+15,Jacksonville Jaguars,Jaguars,JAX,AFC,South,NFL
+16,Kansas City Chiefs,Chiefs,KC,AFC,West,NFL
+17,Miami Dolphins,Dolphins,MIA,AFC,East,NFL
+18,Minnesota Vikings,Vikings,MIN,NFC,North,NFL
+19,New England Patriots,Patriots,NE,AFC,East,NFL
+20,New Orleans Saints,Saints,NO,NFC,South,NFL
+21,New York Giants,Giants,NYG,NFC,East,NFL
+22,New York Jets,Jets,NYJ,AFC,East,NFL
+23,Las Vegas Raiders,Raiders,LV,AFC,West,NFL
+24,Philadelphia Eagles,Eagles,PHI,NFC,East,NFL
+25,Pittsburgh Steelers,Steelers,PIT,AFC,North,NFL
+26,Los Angeles Chargers,Chargers,LAC,AFC,West,NFL
+27,San Francisco 49ers,49ers,SF,NFC,West,NFL
+28,Seattle Seahawks,Seahawks,SEA,NFC,West,NFL
+29,Los Angeles Rams,Rams,LAR,NFC,West,NFL
+30,Tampa Bay Buccaneers,Buccaneers,TB,NFC,South,NFL
+31,Tennessee Titans,Titans,TEN,AFC,South,NFL
+32,Washington Commanders,Commanders,WAS,NFC,East,NFL
