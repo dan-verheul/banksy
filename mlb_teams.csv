@@ -1,0 +1,31 @@
+ID,Name,Team,Abbreviation,Sport
+1,Arizona Diamondbacks,Diamondbacks,ARI,MLB
+2,Atlanta Braves,Braves,ATL,MLB
+3,Baltimore Orioles,Orioles,BAL,MLB
+4,Boston Red Sox,Red Sox,BOS,MLB
+5,Chicago Cubs,Cubs,CHC,MLB
+6,Chico White Sox,White Sox,CHW,MLB
+7,Cincinnati Reds,Reds,CIN,MLB
+8,Cleveland Guardians,Guardians,CLE,MLB
+9,Colorado Rockies,Rockies,COL,MLB
+10,Detroit Tigers,Tigers,DET,MLB
+11,Houston Astros,Astros,HOU,MLB
+12,Kansas City Royals,Royals,KAN,MLB
+13,Los Angeles Angels,Angels,LAA,MLB
+14,Los Angeles Dodgers,Dodgers,LAD,MLB
+15,Miami Marlins,Marlins,MIA,MLB
+16,Milwaukee Brewers,Brewers,MIL,MLB
+17,Minnesota Twins,Twins,MIN,MLB
+18,New York Mets,Mets,NYM,MLB
+19,New York Yankees,Yankees,NYY,MLB
+20,Oakland Athletics,Athletics,OAK,MLB
+21,Philadelphia Phillies,Phillies,PHI,MLB
+22,Pittsburgh Pirates,Pirates,PIT,MLB
+23,San Diego Padres,Padres,SD,MLB
+24,San Francisco Giants,Giants,SF,MLB
+25,Seattle Mariners,Mariners,SEA,MLB
+26,St. Louis Cardinals,Cardinals,STL,MLB
+27,Tampa Bay Rays,Rays,TB,MLB
+28,Texas Rangers,Rangers,TEX,MLB
+29,Toronto Blue Jays,Blue Jays,TOR,MLB
+30,Washington Nationals,Nationals,WAS,MLB
