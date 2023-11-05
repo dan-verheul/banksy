@@ -53,6 +53,7 @@ for sport in sport_list:
 original_df = pd.concat(dfs, ignore_index=True)
 
 #Clean up df: remove blank rows, move title row to title of df, remove apps that we don't want
+original_df = original_df.iloc[1:]
 original_df = original_df[original_df.iloc[:, 0] != '']
 original_df = original_df[original_df.iloc[:, 1].notna()]
 original_df.columns = original_df.iloc[0]
@@ -239,8 +240,8 @@ final_df.replace('N/A', None, inplace=True)
 ############################################################################
 ############## TESTING
 ############################################################################
-# final_df.loc[1, 'PointsBet'] = 130
-# final_df.loc[262, 'Bet365'] = 140
+# final_df.loc[9, 'DraftKings'] = 225
+# final_df.loc[8, 'Caesars'] = -180
 # final_df.at[259, 'BetMGM'] = 1110
 # final_df.at[41, 'Caesars'] = 115
 
