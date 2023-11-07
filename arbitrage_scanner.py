@@ -28,8 +28,8 @@ pd.set_option('display.max_rows', None)
 
 #constants
 sport_list = ['MLB', 'NFL', 'NBA']
-bookies_list = ['DraftKings', 'BetMGM', 'Caesars', 'FanDuel', 'RiversCasino', 'Bet365', 'PointsBet', 'Unibet', 'Consensus']
-non_az_or_ny_bookies = ['Bet365', 'Consensus']
+bookies_list = ['DraftKings', 'BetMGM', 'Caesars', 'FanDuel', 'RiversCasino', 'Bet365', 'PointsBet', 'Unibet']
+non_az_or_ny_bookies = ['Bet365']
 non_az_bookies = ['PointsBet']
 
 ############################################################################
@@ -63,7 +63,6 @@ for sport in sport_list:
     if sport in original_df.columns:
         original_df.rename(columns={sport: 'Sport'}, inplace=True)
 
-
 columns_to_keep = ['Time', 'Sport'] + bookies_list # 'Open', #This is Vegas Insider lines (I think)
 columns_to_remove = [col for col in original_df.columns if col not in columns_to_keep]
 setup_df = original_df.drop(columns=columns_to_remove)
@@ -86,7 +85,7 @@ for column in bookies_list:
 def determine_bet_type(row):
     if any(op in row['Bet365'] for op in ('o', 'u')):
         return 'Over/Under'
-    elif len(row['Bet365']) == 4:
+    elif len(row['Bet365']) == 4 or len(row['Bet365']) == 5:
         return 'ML'
     elif any(op in row['Bet365'] for op in ('+', '-')):
         return 'Spread'
@@ -99,18 +98,20 @@ setup_df = setup_df[['Bet Type'] + [col for col in setup_df.columns if col != 'B
 df_spread = setup_df[setup_df['Bet Type'] == 'Spread'].copy()
 game_id_values = [i // 2 + 1 for i in range(len(df_spread))]
 df_spread['game_id'] = game_id_values
+df_spread = df_spread[~((df_spread['Team'] == 'Time') & (df_spread['DraftKings'].isna()))]
 
 df_ml = setup_df[setup_df['Bet Type'] == 'ML'].copy()
 game_id_values = [i // 2 + 1 for i in range(len(df_ml))]
 df_ml['game_id'] = game_id_values
+df_ml = df_ml[~((df_ml['Team'] == 'Time') & (df_ml['DraftKings'].isna()))]
 
 df_overunder = setup_df[setup_df['Bet Type'] == 'Over/Under'].copy()
 game_id_values = [i // 2 + 1 for i in range(len(df_overunder))]
 df_overunder['game_id'] = game_id_values
+df_overunder = df_overunder[~((df_overunder['Team'] == 'Time') & (df_overunder['DraftKings'].isna()))]
 
 setup_df = pd.concat([df_spread, df_ml, df_overunder])
 setup_df = setup_df.sort_index(ascending=True)
-
 
 # Duplicate the rows and add a new column called "Info" that has either the Betting Line or the Payout information
 duplicated_rows = []
@@ -190,6 +191,17 @@ for sport in sports_lowercase:
 merged_df['Abbreviation'] = merged_df['Abbreviation_mlb'].fillna(merged_df['Abbreviation_nfl']).fillna(merged_df['Abbreviation_nba'])
 merged_df.drop(['Abbreviation_mlb', 'Abbreviation_nfl', 'Abbreviation_nba'], axis=1, inplace=True)
 final_df = merged_df
+
+#pull in final_bovada_df
+from bovada_pull import final_bovada_df
+import subprocess
+subprocess.run(["python", "bovada_pull.py"])
+
+#left join the final_bovada_df to final_df -- only if there is a df to join
+if not final_bovada_df.empty: #if df is nto empty
+    final_df = pd.merge(final_df, final_bovada_df[['Team', 'Bet Type', 'Info', 'Bovada']], on=['Team', 'Bet Type', 'Info'], how='left')
+    bookies_list = bookies_list + ['Bovada']
+    final_df = final_df[['Sport','Game ID','Abbreviation','Team','Bet Type','Info']+bookies_list]
 
 ############################################################################
 ############## Final Scores DFs
