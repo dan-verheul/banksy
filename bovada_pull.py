@@ -8,6 +8,8 @@ import pandas as pd
 import time
 import re
 start_time = time.time()
+pd.set_option('display.max_columns', None)
+pd.set_option('display.max_rows', None)
 
 while True:
     chrome_options = Options()
@@ -151,6 +153,14 @@ if 'skip_bovada' not in locals() and 'skip_bovada' not in globals(): #run code o
     df3['moneyline'] = df3['moneyline'].replace('EVEN', '+100') #change EVEN to +100
     df3['over_under_payout'] = df3['over_under_payout'].replace('EVEN', '+100') #change EVEN to +100
 
+    #delete the second time teams play. Ex: if Bills play MNF and you pull monday morning it will show Bills game for tonight and this weekend, remove this weekends game (and opponent too)
+    #too much of a nightmare trying to keep both instances (can add in later)
+    game_id_values = [i // 2 + 1 for i in range(len(df3))]
+    df3['game_id'] = game_id_values
+    df3['Rank'] = df3.groupby('team').cumcount() + 1
+    game_ids_to_remove = df3[df3['Rank'] == 2]['game_id'].unique()
+    df3 = df3[~df3['game_id'].isin(game_ids_to_remove)]
+
     # match structure from final_df in arb_scanner
     #1: create ML df
     bovada_ml_df = df3[['team', 'moneyline']]
@@ -158,6 +168,8 @@ if 'skip_bovada' not in locals() and 'skip_bovada' not in globals(): #run code o
     bovada_ml_df.rename(columns={'team': 'Team', 'moneyline': 'Bovada'}, inplace=True)
     bovada_ml_df['Bet Type'] = 'ML'
     bovada_ml_df['Info'] = 'Payout'
+    #sometimes there are blank values in Bovada, when this happens another col gets duplicated. If value has "(", ")", "O", or "U" then replace value with ''
+    bovada_ml_df['Bovada'] = bovada_ml_df['Bovada'].apply(lambda x: '' if any(char in x for char in '()OU') else x)
 
     #2: create spread df
     bovada_spread_df = df3[['team', 'spread','spread_payout']]
@@ -169,7 +181,7 @@ if 'skip_bovada' not in locals() and 'skip_bovada' not in globals(): #run code o
     bovada_spread_df = bovada_spread_df.drop(columns=['spread','spread_payout']) #drop old cols
     bovada_spread_df.rename(columns={'team': 'Team'}, inplace=True) #rename to help with join
     bovada_spread_df['Bet Type'] = 'Spread'
-
+   
     #3: create overunder df
     bovada_ou_df = df3[['team', 'over_under','over_under_payout']]
     bovada_ou_df = pd.concat([bovada_ou_df, bovada_ou_df], ignore_index=True) #duplicate each row

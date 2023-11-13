@@ -304,11 +304,12 @@ scope = ['https://spreadsheets.google.com/feeds', 'https://www.googleapis.com/au
 creds = ServiceAccountCredentials.from_json_keyfile_name(creds_file, scope)
 client = gspread.authorize(creds)
 
-sheet_title = 'Python'
+sheet_title = 'Arbitrage Scanner'
 spreadsheet = client.open(sheet_title)
 worksheet = spreadsheet.get_worksheet(1)
 worksheet.clear()
 start_cell = 'A1'
+google_sheets_df.fillna("", inplace=True)
 data = google_sheets_df.values.tolist()
 data = [google_sheets_df.columns.tolist()] + google_sheets_df.values.tolist()
 worksheet.update(start_cell, data)
@@ -430,7 +431,7 @@ if len(alert_df) > 0:
         #   if update not found on update page then send update
         #   if update found 2 times or less with same date then send update
         #   if more than 3 notifcations already recorded, don't send update
-        spreadsheet = client.open('Python')
+        spreadsheet = client.open('Arbitrage Scanner')
         worksheet = spreadsheet.get_worksheet(2)  # Change the index as needed
         data = worksheet.get_all_records()
         df = pd.DataFrame(data)
@@ -438,6 +439,7 @@ if len(alert_df) > 0:
             notifications_sent = df[['Team','updated_at']]
             notifications_sent['updated_at'] = pd.to_datetime(notifications_sent['updated_at'])
             team_daily_notification_count = notifications_sent.groupby(['updated_at', 'Team']).size().reset_index(name='Count')
+            team_daily_notification_count = notifications_sent.groupby([notifications_sent['updated_at'].dt.date, 'Team']).size().reset_index(name='Count')
         else:
             columns = ['Teams', 'updated_at']
             team_daily_notification_count = pd.DataFrame(columns=columns)
@@ -499,8 +501,8 @@ if len(alert_df) > 0:
                     # write update to google sheets
                     worksheet = spreadsheet.get_worksheet(2)
                     sheets_upload = notification_df[['Sport','Game ID','Bookie','Team','Bet Type','Final Bet Line','Profit Margin','Combined']]
-                    current_time_seattle = datetime.now(pytz.timezone('America/Los_Angeles'))
-                    sheets_upload['updated_at'] = current_time_seattle.strftime('%Y-%m-%d')
+                    current_time_seattle = datetime.now(pytz.timezone('America/Phoenix'))
+                    sheets_upload['updated_at'] = current_time_seattle.strftime('%Y-%m-%d %H:%M')
                     data_to_append = sheets_upload.astype(str).values.tolist()
                     existing_data = worksheet.col_values(1)
                     last_row = len(existing_data) + 1  # The next row after the last row with data
