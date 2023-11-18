@@ -13,10 +13,15 @@ import http.client, urllib
 #set working directory and pull in hidden variables
 import os
 current_directory = os.getcwd()
-if os.path.basename(current_directory) != 'GitHub':
-    parent_directory = os.path.abspath(os.path.join(current_directory, os.pardir)) #take one step back from current directory
+while os.path.basename(current_directory) != 'GitHub':
+    parent_directory = os.path.abspath(os.path.join(current_directory, os.pardir))
     os.chdir(parent_directory)
+    current_directory = parent_directory
+
 from banksy_private.config import *
+
+set_directory = os.path.join(current_directory, 'banksy')
+os.chdir(set_directory)
 
 #general
 import pandas as pd
@@ -181,7 +186,7 @@ merged_df = final_df.copy()
 sport_data = {}
 for sport in sports_lowercase:
     csv_filename = f"{sport}_teams.csv"
-    file_path = os.path.join(os.getcwd(), "banksy", csv_filename)
+    file_path = os.path.join(os.getcwd(), csv_filename)
     team_df = pd.read_csv(file_path)
     team_df = team_df[['Team', 'Sport', 'Abbreviation']]  # Select relevant columns
     team_df.rename(columns={'Abbreviation': f'Abbreviation_{sport}'}, inplace=True)
